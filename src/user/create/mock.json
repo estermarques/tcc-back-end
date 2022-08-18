@@ -1,0 +1,7 @@
+{
+  "body": {
+    "email": "teste@email.com.br",
+    "name": "John Doe",
+    "isProfessor": false
+  }
+}

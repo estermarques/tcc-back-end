@@ -1,0 +1,37 @@
+service: back-end
+frameworkVersion: '3'
+plugins:
+  - serverless-offline
+  - serverless-bundle
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-1
+  stage: dev
+
+functions:
+  Matheus:
+    handler: src/test.main
+  CreateUser:
+    handler: src/user/create/handler.main
+    events:
+      - http:
+          path: /user
+          method: post
+          cors: true
+
+resources:
+  Resources:
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: projectio
+        UsernameAttributes:
+          - email
+        AutoVerifiedAttributes:
+          - email
+    DocumentsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: projectio-documents-bucket
