@@ -1,6 +1,13 @@
 import db from '../../../models';
 import { v4 as uuid } from 'uuid';
 
+class NotFoundError {
+  constructor(message) {
+    this.message = message;
+    this.name = "NotFoundError";
+  }
+}
+
 /**
  * @name CreateProject
  * @command serverless invoke local -f CreateProject -p src/project/create/mock.json
@@ -15,16 +22,30 @@ export async function main(event) {
 
     const {
       project,
-      user
+      user,
+      projectSubject,
+      projectTheme
     } = db;
 
     const getUser = await user.findByPk(eventBody.userId);
 
-    if(!getUser) throw new NotFoundError("User not found.")
-
-    // ! ainda precisa aceitar cadastro com tema e materias
+    if(!getUser) throw new NotFoundError("User not found.");
 
     const newProject = await project.create(eventBody);
+
+    eventBody.themes.forEach(theme => {
+      projectTheme.create({
+        projectId: newProject.id,
+        themeId: theme
+      });
+    });
+
+    eventBody.subjects.forEach(subject => {
+      projectSubject.create({
+        projectId: newProject.id,
+        subjectId: subject
+      });
+    });
 
     statusCode = 201;
     body.message = "Success to create new project";
@@ -32,8 +53,16 @@ export async function main(event) {
 
   } catch (error) {
     console.log(error);
-    statusCode = 500;
-    body.error = 'Error to create new project';
+
+    switch(error.name) {
+        case "NotFoundError":
+          statusCode = 404;
+          body.error = error.message;
+          break;
+        default:
+          statusCode = 500;
+          body.error = 'Error to create new project';
+    }
   }
 
   return {

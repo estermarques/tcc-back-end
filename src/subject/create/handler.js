@@ -1,13 +1,13 @@
 import db from '../../../models';
 
-function ExistingThemeError(message) {
+function ExistingSubjectError(message) {
   this.message = message;
-  this.name = "ExistingThemeError";
+  this.name = "ExistingSubjectError";
 }
 
 /**
- * @name CreateTheme
- * @command serverless invoke local -f CreateTheme -p src/theme/create/mock.json
+ * @name CreateSubject
+ * @command serverless invoke local -f CreateSubject -p src/subject/create/mock.json
  */
 export async function main(event) {
   const eventBody = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
@@ -16,32 +16,32 @@ export async function main(event) {
 
   try {
     const {
-      theme
+      subject
     } = db;
 
-    const getTheme = await theme.findAll({
+    const getSubject = await subject.findAll({
       where: { title: eventBody.title }
     });
 
-    if(!getTheme) throw new ExistingThemeError("This theme already exists.");
+    if(!getSubject) throw new ExistingSubjectError("This subject already exists.");
 
-    const newTheme = await theme.create(eventBody);
+    const newSubject = await subject.create(eventBody);
 
     statusCode = 201;
-    body.message = "Success to create new theme";
-    body.theme = newTheme.id;
+    body.message = "Success to create new subject";
+    body.subject = newSubject.id;
 
   } catch (error) {
     console.log(error);
 
     switch(error.name) {
-        case "ExistingThemeError":
+        case "ExistingSubjectError":
           statusCode = 404;
           body.error = error.message;
           break;
         default:
           statusCode = 500;
-          body.error = 'Error to create new theme';
+          body.error = 'Error to create new subject';
     }
   }
 

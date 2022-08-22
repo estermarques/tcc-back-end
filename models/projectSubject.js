@@ -1,13 +1,13 @@
-module.exports = (sequelize) => {
-  const projectSubject = sequelize('projectSubject', {
+export default (sequelize, DataTypes) => {
+  const projectSubject = sequelize.define('projectSubject', {
     projectId: {
-      type: sequelize.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
       autoIncrement: false,
       primaryKey: true
     },
     subjectId: {
-      type: sequelize.INTEGER,
+      type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: false,
       primaryKey: true
@@ -22,7 +22,7 @@ module.exports = (sequelize) => {
   projectSubject.associate = function associateModels(models) {
     projectSubject.belongsTo(models.subject, { foreignKey: 'subjectId'});
     projectSubject.belongsTo(models.project, { foreignKey: 'projectId'});
-  }
- 
+  };
+
   return projectSubject;
 };

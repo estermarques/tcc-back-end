@@ -4,6 +4,8 @@
     "description": "Descrição do teste",
     "repositoryLink": "link",
     "stepsTaken": "passos",
-    "userId": "00aa5ea6-bc9d-4ccc-b5b8-a66e9738b46f"
+    "userId": "00aa5ea6-bc9d-4ccc-b5b8-a66e9738b46f",
+    "themes": [2],
+    "subjects": [1]
   }
 }

@@ -11,7 +11,7 @@ module.exports = {
           key: 'id',
         },
       },
-      themeId: {
+      subjectId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: false,

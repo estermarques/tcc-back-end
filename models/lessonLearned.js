@@ -1,22 +1,22 @@
-module.exports = (sequelize) => {
-  const lessonLearned = sequelize('lessonLearned', {
+export default (sequelize, DataTypes) => {
+  const lessonLearned = sequelize.define('lessonLearned', {
       id: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
       },
       challenge: {
-        type: sequelize.STRING
+        type: DataTypes.STRING
       },
       solution: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
       },
       studyLinks: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
       },
       projectId: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
       }
     }, {
       timestamps: false,
@@ -27,7 +27,7 @@ module.exports = (sequelize) => {
 
   lessonLearned.associate = function associateModels(models) {
     lessonLearned.belongsTo(models.project,  { foreignKey: 'id'});
-  }
- 
+  };
+
   return lessonLearned;
 };

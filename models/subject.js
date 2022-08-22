@@ -1,13 +1,13 @@
-module.exports = (sequelize) => {
-  const subject = sequelize('subject', {
+export default (sequelize, DataTypes) => {
+  const subject = sequelize.define('subject', {
     id: {
-      type: sequelize.INTEGER,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       allowNull: false,
       primaryKey: true,
     },
     title: {
-      type: sequelize.STRING
+      type: DataTypes.STRING
     }
   }, {
       timestamps: false,
@@ -18,7 +18,7 @@ module.exports = (sequelize) => {
 
   subject.associate = function associateModels(models) {
     subject.hasMany(models.projectSubject, { foreignKey: 'subjectId'});
-  }
- 
+  };
+
   return subject;
 };

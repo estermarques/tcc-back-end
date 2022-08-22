@@ -1,26 +1,26 @@
-module.exports = (sequelize) => {
-  const project = sequelize('project', {
+export default (sequelize, DataTypes) => {
+  const project = sequelize.define('project', {
       id: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
         autoIncrement: false,
         allowNull: false,
         primaryKey: true,
       },
       title: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       description: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
       },
       repositoryLink: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
       },
       stepsTaken: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
       },
       userId: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
       }
       }, {
         timestamps: false,
@@ -38,7 +38,7 @@ module.exports = (sequelize) => {
     project.hasMany(models.projectSubject, { foreignKey: 'projectId'});
     project.hasMany(models.lessonLearned, { foreignKey: 'projectId'});
     project.hasMany(models.comment, { foreignKey: 'projectId'});
-  }
- 
+  };
+
   return project;
 };
