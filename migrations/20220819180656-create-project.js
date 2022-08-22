@@ -1,6 +1,6 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('project', {
+    await queryInterface.createTable('projects', {
       id: {
         allowNull: false,
         autoIncrement: false,
@@ -23,7 +23,7 @@ module.exports = {
       userId: {
         type: Sequelize.STRING,
         references: {
-          model: 'user',
+          model: 'users',
           key: 'id',
         },
       }
@@ -31,6 +31,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('project');
+    await queryInterface.dropTable('projects');
   }
 };

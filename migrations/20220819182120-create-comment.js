@@ -1,6 +1,6 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('comment', {
+    await queryInterface.createTable('comments', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,14 +13,14 @@ module.exports = {
       userId: {
         type: Sequelize.STRING,
         references: {
-          model: 'user',
+          model: 'users',
           key: 'id',
         },
       },
       projectId: {
         type: Sequelize.STRING,
         references: {
-          model: 'project',
+          model: 'projects',
           key: 'id',
         },
       }
@@ -28,6 +28,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('comment');
+    await queryInterface.dropTable('comments');
   }
 };

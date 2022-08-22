@@ -1,13 +1,13 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('projectTheme', {
+    await queryInterface.createTable('projectThemes', {
       projectId: {
         type: Sequelize.STRING,
         allowNull: false,
         autoIncrement: false,
         primaryKey: true,
         references: {
-          model: 'project',
+          model: 'projects',
           key: 'id',
         },
       },
@@ -17,7 +17,7 @@ module.exports = {
         autoIncrement: false,
         primaryKey: true,
         references: {
-          model: 'theme',
+          model: 'themes',
           key: 'id',
         },
       }
@@ -25,6 +25,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('projectTheme');
+    await queryInterface.dropTable('projectThemes');
   }
 };

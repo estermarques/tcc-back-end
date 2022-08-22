@@ -12,7 +12,12 @@ module.exports = (sequelize) => {
       autoIncrement: false,
       primaryKey: true
     }
-  });
+    }, {
+      timestamps: false,
+      createdAt: false,
+      updatedAt: false,
+    }
+);
 
   projectTheme.associate = function associateModels(models) {
     projectTheme.belongsTo(models.theme, { foreignKey: 'themeId'});

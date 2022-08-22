@@ -12,7 +12,12 @@ module.exports = (sequelize) => {
       autoIncrement: false,
       primaryKey: true
     }
-  });
+    }, {
+      timestamps: false,
+      createdAt: false,
+      updatedAt: false,
+    }
+);
 
   projectSubject.associate = function associateModels(models) {
     projectSubject.belongsTo(models.subject, { foreignKey: 'subjectId'});

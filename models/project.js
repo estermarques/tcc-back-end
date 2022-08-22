@@ -21,8 +21,13 @@ module.exports = (sequelize) => {
       },
       userId: {
         type: sequelize.STRING,
-      },
-  });
+      }
+      }, {
+        timestamps: false,
+        createdAt: false,
+        updatedAt: false,
+      }
+  );
 
   project.associate = function associateModels(models) {
     project.belongsTo(models.user,  { foreignKey: 'id'});

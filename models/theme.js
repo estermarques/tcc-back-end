@@ -9,7 +9,12 @@ module.exports = (sequelize) => {
     title: {
       type: sequelize.STRING
     }
-  });
+    }, {
+      timestamps: false,
+      createdAt: false,
+      updatedAt: false,
+    }
+);
 
   theme.associate = function associateModels(models) {
     theme.hasMany(models.projectTheme, { foreignKey: 'themeId'});

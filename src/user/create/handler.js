@@ -1,6 +1,6 @@
-import { user } from '../../../models/index.js';
+import db from '../../../models';
 import { v4 as uuid } from 'uuid';
-import CognitoIdentityServiceProvider from 'aws-sdk';
+import { CognitoIdentityServiceProvider } from 'aws-sdk';
 
 const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider();
 
@@ -16,14 +16,18 @@ export async function main(event) {
   try {
     eventBody.id = uuid();
 
+    const {
+      user
+    } = db;
+
     const newUser = await user.create(eventBody);
 
     const params = {
       UserPoolId: "us-east-1_aELCHI62m",
-      Username: eventBody.id
+      Username: eventBody.email
     };
 
-    await cognitoIdentityServiceProvider.adminConfirmSignUp(params).promise();
+    await cognitoIdentityServiceProvider.adminCreateUser(params).promise();
 
     statusCode = 201;
     body.message = "Success to create new user";
@@ -33,6 +37,9 @@ export async function main(event) {
     console.log(error);
     statusCode = 500;
     body.error = 'Error to create new user';
+
+    if (error.name === 'UsernameExistsException')
+      body.error = 'An account with the given email already exists.';
   }
 
   return {

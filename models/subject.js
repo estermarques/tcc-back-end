@@ -9,7 +9,12 @@ module.exports = (sequelize) => {
     title: {
       type: sequelize.STRING
     }
-  });
+  }, {
+      timestamps: false,
+      createdAt: false,
+      updatedAt: false,
+    }
+);
 
   subject.associate = function associateModels(models) {
     subject.hasMany(models.projectSubject, { foreignKey: 'subjectId'});

@@ -1,29 +1,34 @@
-module.exports = (sequelize) => {
-  const user = sequelize('user', {
+export default (sequelize, DataTypes) => {
+  const user = sequelize.define('user', {
     id: {
-      type: sequelize.STRING,
+      type: DataTypes.STRING,
       autoIncrement: false,
       allowNull: false,
       primaryKey: true,
     },
     email: {
-      type: sequelize.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     name: {
-      type: sequelize.STRING,
+      type: DataTypes.STRING,
     },
     isProfessor: {
-      type: sequelize.BOOLEAN,
+      type: DataTypes.BOOLEAN,
     },
-  });
+    }, {
+      timestamps: false,
+      createdAt: false,
+      updatedAt: false,
+    }
+  );
 
   user.associate = function associateModels(models) {
     user.belongsToMany(models.project, { through: 'userId' });
     user.belongsToMany(models.comment, { through: 'userId' });
     user.hasMany(models.project);
     user.hasMany(models.comment);
-  }
- 
+  };
+
   return user;
 };

@@ -18,7 +18,12 @@ module.exports = (sequelize) => {
       projectId: {
         type: sequelize.STRING,
       }
-  });
+    }, {
+      timestamps: false,
+      createdAt: false,
+      updatedAt: false,
+    }
+  );
 
   lessonLearned.associate = function associateModels(models) {
     lessonLearned.belongsTo(models.project,  { foreignKey: 'id'});

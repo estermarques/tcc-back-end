@@ -9,15 +9,32 @@ provider:
   runtime: nodejs14.x
   region: us-east-1
   stage: dev
+  iam: 
+    role:
+      statements:
+        - Effect: Allow
+          Action: cognito-idp:adminCreateUser
+          Resource: arn:aws:cognito-idp:us-east-1:945464918858:userpool/us-east-1_aELCHI62m
+  environment:
+    DB_USER: admin
+    DB_PWD: +wse4rftgy7ujiko0p-[
+    DB_NAME: dbprojectio
+    DB_HOST: mysqlserver.cntgvyhxhz7f.us-east-1.rds.amazonaws.com
+    DB_PORT: 3306
 
 functions:
-  Matheus:
-    handler: src/test.main
   CreateUser:
     handler: src/user/create/handler.main
     events:
       - http:
           path: /user
+          method: post
+          cors: true
+  CreateProject:
+    handler: src/project/create/handler.main
+    events:
+      - http:
+          path: /project
           method: post
           cors: true
 
