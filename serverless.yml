@@ -107,8 +107,13 @@ functions:
           path: /project
           method: get
           cors: true
-
-
+  SearchProject:
+    handler: src/project/search/handler.main
+    events:
+      - http:
+          path: /project
+          method: get
+          cors: true
 
 resources:
   Resources:
