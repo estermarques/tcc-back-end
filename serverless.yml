@@ -45,26 +45,68 @@ functions:
           method: post
           cors: true
   CreateSubject:
-      handler: src/subject/create/handler.main
-      events:
-        - http:
-            path: /subject
-            method: post
-            cors: true
+    handler: src/subject/create/handler.main
+    events:
+      - http:
+          path: /subject
+          method: post
+          cors: true
   ListSubjects:
-      handler: src/subject/list/handler.main
-      events:
-        - http:
-            path: /subject
-            method: get
-            cors: true
+    handler: src/subject/list/handler.main
+    events:
+      - http:
+          path: /subject
+          method: get
+          cors: true
   ListThemes:
-      handler: src/theme/list/handler.main
-      events:
-        - http:
-            path: /theme
-            method: get
-            cors: true
+    handler: src/theme/list/handler.main
+    events:
+      - http:
+          path: /theme
+          method: get
+          cors: true
+  CreateLessonLearned:
+    handler: src/lessonLearned/create/handler.main
+    events:
+      - http:
+          path: /lessonLearned
+          method: post
+          cors: true
+  EditLessonLearned:
+    handler: src/lessonLearned/edit/handler.main
+    events:
+      - http:
+          path: /lessonLearned
+          method: put
+          cors: true
+  DeleteLessonLearned:
+    handler: src/lessonLearned/delete/handler.main
+    events:
+      - http:
+          path: /lessonLearned
+          method: delete
+          cors: true
+  DeleteProject:
+    handler: src/project/delete/handler.main
+    events:
+      - http:
+          path: /project
+          method: delete
+          cors: true
+  EditProject:
+    handler: src/project/edit/handler.main
+    events:
+      - http:
+          path: /project
+          method: put
+          cors: true
+  GetProject:
+    handler: src/project/get/handler.main
+    events:
+      - http:
+          path: /project
+          method: get
+          cors: true
 
 
 

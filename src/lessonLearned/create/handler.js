@@ -1,13 +1,15 @@
 import db from '../../../models';
 
-function ExistingObjectError(message) {
-  this.message = message;
-  this.name = "ExistingObjectError";
+class NotFoundError {
+  constructor(message) {
+    this.message = message;
+    this.name = "NotFoundError";
+  }
 }
 
 /**
- * @name CreateSubject
- * @command serverless invoke local -f CreateSubject -p src/subject/create/mock.json
+ * @name CreateLessonLearned
+ * @command serverless invoke local -f CreateLessonLearned -p src/lessonLearned/create/mock.json
  */
 export async function main(event) {
   const eventBody = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
@@ -16,32 +18,31 @@ export async function main(event) {
 
   try {
     const {
-      subject
+      project,
+      lessonLearned
     } = db;
 
-    const getSubject = await subject.findAll({
-      where: { title: eventBody.title }
-    });
+    const getProject = await project.findByPk(eventBody.projectId);
 
-    if(!getSubject) throw new ExistingObjectError("This subject already exists.");
+    if(!getProject) throw new NotFoundError("Project not found.");
 
-    const newSubject = await subject.create(eventBody);
+    const newLessonLearned = await lessonLearned.create(eventBody);
 
     statusCode = 201;
-    body.message = "Success to create new subject";
-    body.subject = newSubject.id;
+    body.message = "Success to create new lesson learned";
+    body.lessonLearned = newLessonLearned.id;
 
   } catch (error) {
     console.log(error);
 
     switch(error.name) {
-        case "ExistingObjectError":
+        case "NotFoundError":
           statusCode = 404;
           body.error = error.message;
           break;
         default:
           statusCode = 500;
-          body.error = 'Error to create new subject';
+          body.error = 'Error to create new lesson learned';
     }
   }
 

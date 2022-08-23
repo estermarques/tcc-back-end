@@ -1,8 +1,8 @@
 import db from '../../../models';
 
-function ExistingThemeError(message) {
+function ExistingObjectError(message) {
   this.message = message;
-  this.name = "ExistingThemeError";
+  this.name = "ExistingObjectError";
 }
 
 /**
@@ -23,7 +23,7 @@ export async function main(event) {
       where: { title: eventBody.title }
     });
 
-    if(!getTheme) throw new ExistingThemeError("This theme already exists.");
+    if(!getTheme) throw new ExistingObjectError("This theme already exists.");
 
     const newTheme = await theme.create(eventBody);
 
@@ -35,7 +35,7 @@ export async function main(event) {
     console.log(error);
 
     switch(error.name) {
-        case "ExistingThemeError":
+        case "ExistingObjectError":
           statusCode = 404;
           body.error = error.message;
           break;

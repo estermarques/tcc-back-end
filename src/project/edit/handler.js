@@ -1,5 +1,4 @@
 import db from '../../../models';
-import { v4 as uuid } from 'uuid';
 
 class NotFoundError {
   constructor(message) {
@@ -9,8 +8,8 @@ class NotFoundError {
 }
 
 /**
- * @name CreateProject
- * @command serverless invoke local -f CreateProject -p src/project/create/mock.json
+ * @name EditProject
+ * @command serverless invoke local -f EditProject -p src/project/edit/mock.json
  */
 export async function main(event) {
   const eventBody = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
@@ -18,39 +17,43 @@ export async function main(event) {
   let statusCode;
 
   try {
-    eventBody.id = uuid();
-
     const {
       project,
-      user,
       projectSubject,
       projectTheme
     } = db;
 
-    const getUser = await user.findByPk(eventBody.userId);
+    const getProject = await project.findByPk(eventBody.id);
 
-    if(!getUser) throw new NotFoundError("User not found.");
+    if(!getProject) throw new NotFoundError("Project not found.");
 
-    //! falta adicionar docuemntos no s3
-    const newProject = await project.create(eventBody);
+    await getProject.update(eventBody);
 
-    eventBody.themes.forEach(theme => {
-      projectTheme.create({
-        projectId: newProject.id,
-        themeId: theme
+    if(eventBody.themes) {
+      eventBody.themes.forEach(theme => {
+        projectTheme.findOrCreate({
+          where: {
+            projectId: eventBody.id,
+            themeId: theme
+          }
+        });
       });
-    });
+    }
 
-    eventBody.subjects.forEach(subject => {
-      projectSubject.create({
-        projectId: newProject.id,
-        subjectId: subject
+    if(eventBody.subjects) {
+      eventBody.subjects.forEach(subject => {
+        projectSubject.findOrCreate({
+          where: {
+            projectId: eventBody.id,
+            subjectId: subject
+          }
+        });
       });
-    });
+    }
 
-    statusCode = 201;
-    body.message = "Success to create new project";
-    body.project = newProject.id;
+    statusCode = 200;
+    body.message = "Success to edit project";
+    body.project = getProject;
 
   } catch (error) {
     console.log(error);
@@ -62,7 +65,7 @@ export async function main(event) {
           break;
         default:
           statusCode = 500;
-          body.error = 'Error to create new project';
+          body.error = 'Error to edit project';
     }
   }
 
