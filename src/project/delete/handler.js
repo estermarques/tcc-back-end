@@ -20,12 +20,14 @@ export async function main(event) {
       lessonLearned,
       projectSubject,
       projectTheme,
-      project
+      project,
+      comment,
     } = db;
 
     await lessonLearned.destroy({where: { projectId: eventBody.id }}, { transaction: t });
     await projectSubject.destroy({ where: { projectId: eventBody.id }}, { transaction: t });
     await projectTheme.destroy({ where: { projectId: eventBody.id }}, { transaction: t });
+    await comment.destroy({ where: { projectId: eventBody.id }}, { transaction: t });
     await project.destroy({ where: { id: eventBody.id }}, { transaction: t });
 
     await t.commit();

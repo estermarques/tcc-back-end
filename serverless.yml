@@ -114,6 +114,13 @@ functions:
           path: /project
           method: get
           cors: true
+  CreateComment:
+    handler: src/comment/create/handler.main
+    events:
+      - http:
+          path: /comment
+          method: post
+          cors: true
 
 resources:
   Resources:

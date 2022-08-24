@@ -1,5 +1,4 @@
 import db from '../../../models';
-import { v4 as uuid } from 'uuid';
 
 class NotFoundError {
   constructor(message) {
@@ -9,8 +8,8 @@ class NotFoundError {
 }
 
 /**
- * @name CreateProject
- * @command serverless invoke local -f CreateProject -p src/project/create/mock.json
+ * @name CreateComment
+ * @command serverless invoke local -f CreateComment -p src/comment/create/mock.json
  */
 export async function main(event) {
   const eventBody = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
@@ -18,44 +17,23 @@ export async function main(event) {
   let statusCode;
 
   try {
-    eventBody.id = uuid();
-
     const {
       project,
       user,
-      projectSubject,
-      projectTheme
+      comment
     } = db;
 
     const getUser = await user.findByPk(eventBody.userId);
+    const getProject = await project.findByPk(eventBody.projectId);
 
     if(!getUser) throw new NotFoundError("User not found.");
+    if(!getProject) throw new NotFoundError("Project not found.");
 
-    //! adicionar meio do professor criar tcc e IC
-    //! falta adicionar docuementos no s3
-    const newProject = await project.create(eventBody);
-
-    if(eventBody.themes) {
-      eventBody.themes.forEach(theme => {
-        projectTheme.create({
-          projectId: newProject.id,
-          themeId: theme
-        });
-      });
-    }
-
-    if(eventBody.subjects) {
-      eventBody.subjects.forEach(subject => {
-        projectSubject.create({
-          projectId: newProject.id,
-          subjectId: subject
-        });
-      });
-    }
+    const newComment = await comment.create(eventBody);
 
     statusCode = 201;
-    body.message = "Success to create new project";
-    body.project = newProject.id;
+    body.message = "Success to create new comment";
+    body.comment = newComment.id;
 
   } catch (error) {
     console.log(error);
@@ -67,7 +45,7 @@ export async function main(event) {
           break;
         default:
           statusCode = 500;
-          body.error = 'Error to create new project';
+          body.error = 'Error to create new comment';
     }
   }
 
