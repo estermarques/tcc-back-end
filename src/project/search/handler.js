@@ -1,10 +1,6 @@
 import db from '../../../models';
 
 const { Op } = require('sequelize');
-// const { Sequelize, Op } = require('sequelize');
-// const env = process.env.NODE_ENV || 'development';
-// const config = require('../../../config/config.js')[env];
-// const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 /**
  * @name SearchProject
@@ -45,13 +41,12 @@ export async function main(event) {
         attributes: ['name'],
         where: {
           name: {
-            [Op.like]: `%${eventBody.author}%`,
+            [Op.like]: `%${eventBody.author}%`
           }
         }
       });
     }
 
-    //! colocar para só retornar id, nome do dono, titulo e descrição
     const getProjects = await project.findAll({
       attributes: ['id', 'title', 'description'],
       where: {

@@ -30,7 +30,7 @@ export default (sequelize, DataTypes) => {
   );
 
   project.associate = function associateModels(models) {
-    project.belongsTo(models.user,  { foreignKey: 'id'});
+    project.belongsTo(models.user,  { foreignKey: 'userId'});
     project.belongsToMany(models.lessonLearned, { through: 'projectId' });
     project.belongsToMany(models.comment, { through: 'projectId' });
 
