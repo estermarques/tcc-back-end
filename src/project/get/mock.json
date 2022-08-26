@@ -1,5 +1,5 @@
 {
-  "body": {
-    "id": "10054f78-54c7-44c4-943e-759d4b20b7e9"
+  "pathParameters": {
+    "projectId": "10054f78-54c7-44c4-943e-759d4b20b7e9"
   }
 }

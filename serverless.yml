@@ -104,7 +104,7 @@ functions:
     handler: src/project/get/handler.main
     events:
       - http:
-          path: /project
+          path: /project/{projectId}
           method: get
           cors: true
   SearchProject:

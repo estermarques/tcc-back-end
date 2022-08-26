@@ -12,7 +12,7 @@ class NotFoundError {
  * @command serverless invoke local -f GetProject -p src/project/get/mock.json
  */
 export async function main(event) {
-  const eventBody = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
+  const { projectId } = event.pathParameters;
   const body = {};
   let statusCode;
 
@@ -21,7 +21,8 @@ export async function main(event) {
       project
     } = db;
 
-    const getProject = await project.findByPk(eventBody.id);
+    //! retornar lições aprendidas, temas e materias tbm
+    const getProject = await project.findByPk(projectId);
 
     if(!getProject) throw new NotFoundError("Project not found.");
 

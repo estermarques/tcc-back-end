@@ -7,7 +7,7 @@ const { Op } = require('sequelize');
  * @command serverless invoke local -f SearchProject -p src/project/search/mock.json
  */
 export async function main(event) {
-  const eventBody = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
+  const { theme, subject, author, title } = event.queryStringParameters;
   const body = {};
   let statusCode;
 
@@ -21,37 +21,38 @@ export async function main(event) {
 
     let include = [];
 
-    if(eventBody.theme && eventBody.theme !== 0) {
+    if(theme && theme !== 0) {
       include.push({
         model: projectTheme,
-        where: { themeId: eventBody.theme }
+        where: { themeId: theme }
       });
     }
 
-    if(eventBody.subject && eventBody.subject !== 0) {
+    if(subject && subject !== 0) {
       include.push({
         model: projectSubject,
-        where: { subjectId: eventBody.subject }
+        where: { subjectId: subject }
       });
     }
 
-    if(eventBody.author && eventBody.author !== '') {
+    if(author && author !== '') {
       include.push({
         model: user,
         attributes: ['name'],
         where: {
           name: {
-            [Op.like]: `%${eventBody.author}%`
+            [Op.like]: `%${author}%`
           }
         }
       });
     }
 
+    //! so esta listando quando manda algo no titulo, mesmo que seja vazio
     const getProjects = await project.findAll({
       attributes: ['id', 'title', 'description'],
       where: {
         title: {
-          [Op.like]: `%${eventBody.title}%`,
+          [Op.like]: `%${title}%`,
         }
       },
       include: include
