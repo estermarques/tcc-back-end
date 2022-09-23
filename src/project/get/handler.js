@@ -18,11 +18,14 @@ export async function main(event) {
 
   try {
     const {
-      project
+      project,
     } = db;
 
-    //! retornar lições aprendidas, comentarios, temas e materias tbm + nome do dono
-    const getProject = await project.findByPk(projectId);
+    const where = {
+      id: projectId
+    };
+
+    const getProject = await project.findAll({ where, include: [{ all: true, nested: true }]});
 
     if(!getProject) throw new NotFoundError("Project not found.");
 
