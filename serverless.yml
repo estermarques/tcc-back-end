@@ -121,13 +121,6 @@ functions:
           path: /comment
           method: post
           cors: true
-  ListProjects:
-    handler: src/project/list/handler.main
-    events:
-      - http:
-          path: /project
-          method: get
-          cors: true
   ListComments:
     handler: src/comment/list/handler.main
     events:
