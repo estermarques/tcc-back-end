@@ -21,7 +21,7 @@ export async function main(event) {
       project
     } = db;
 
-    //! retornar lições aprendidas, temas e materias tbm
+    //! retornar lições aprendidas, comentarios, temas e materias tbm + nome do dono
     const getProject = await project.findByPk(projectId);
 
     if(!getProject) throw new NotFoundError("Project not found.");
