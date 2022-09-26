@@ -17,13 +17,13 @@ export async function main(event) {
     let lessonsLearned;
 
     if (projectId && projectId !== '') {
+      lessonsLearned = await lessonLearned.findByPk(id);
+    } else {
       lessonsLearned = await lessonLearned.findAll({
         where: {
           projectId
         }
       });
-    } else {
-      lessonsLearned = await lessonLearned.findByPk(id);
     }
 
     statusCode = 200;
