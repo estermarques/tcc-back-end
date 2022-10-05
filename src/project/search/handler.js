@@ -7,7 +7,7 @@ const { Op } = require('sequelize');
  * @command serverless invoke local -f SearchProject -p src/project/search/mock.json
  */
 export async function main(event) {
-  const { theme, subject, author, title, userId } = event.queryStringParameters;
+  const { subject, author, title, userId } = event.queryStringParameters;
   const body = {};
   let statusCode;
 
@@ -16,7 +16,6 @@ export async function main(event) {
       project,
       user,
       projectSubject,
-      projectTheme
     } = db;
 
     let getProjects = [];
@@ -31,13 +30,6 @@ export async function main(event) {
       });
     } else {
       let include = [];
-
-      if(theme && theme !== 0) {
-        include.push({
-          model: projectTheme,
-          where: { themeId: theme }
-        });
-      }
 
       if(subject && subject !== 0) {
         include.push({

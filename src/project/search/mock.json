@@ -2,7 +2,6 @@
   "queryStringParameters": {
     "author": "John",
     "title": "projeto",
-    "theme": 2,
     "subject": 0
   }
 }
